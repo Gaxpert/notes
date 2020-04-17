@@ -251,6 +251,11 @@ X internal keyboard mapping
 The more recent is xkbcomp
 `setxkbmap`
 
+##Utils
+base64 decode
+`base64 -d FILE`
+Peak inside archive
+`file -z FILE`
 
 ##Network
 Check public ip
