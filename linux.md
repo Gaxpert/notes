@@ -326,6 +326,9 @@ glogg
 xsv
 
 
+###Permission denied error in copy file
+Check group of file. To change group (in case its in a different user)
+`chown USER FILE`
 
 #From scratch
 

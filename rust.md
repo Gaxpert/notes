@@ -214,18 +214,243 @@ while number != 0{
 }
 ```
 loop through collection with **for**
+```rust
+	let a = [1,2,3,4,5];
 
+	for element in a.iter() {
+			println!("The value is {}", element);
+		}
+```
+range and rev in for loops
+```rust
+for n in(1..9).rev(){
+		println!("{}!", n);
+}
+```
 
+##Ownership
+###Rules
+* Each value in Rust has a variable called its **owner**
+* There can be only **one** owner at a time
+* When the owner goes out of scope, the value will be dropped
 
+Instead of using garbage collection, Rust takes a different approach. The memory is automatically returned once that variable that owns it goes out of scope
+When a variable goes out of scope, rust calls **drop** for us which deallocates the resources (similar to Resourse Acquisition Is Initialization in C++)
 
+In rust **shallow copy** (Copying only the reference to memory) also invalidates the first variable
+```rust
+let s1 = String::from("hello");
+let s2 = s1;  
+println!("{}, world!", s1);
+//Compile error. Value moved here (to s2)
+```
+Instead of a shallow copy, its known as a **move**. s1 was moved into s2 (Which will prevent double free bugs)
+Note: Rust will never create "deep" copies of data
 
+If we want to deeply copy the heap data, not just the stack, we can call **clone**
+```rust
+let s1 = String::from("hello");
+let s2 = s1.clone();
+println!("s1 = {} s2 = {}",s1,s2 );
+```
 
+Types that have a known size at compile time (integers for ex) are stored entirely on the stack, so copies are quick to make. In this case there isn't a difference between shallow and deep copy.
+There is a special notation called **Copy** trait which we can place on types like integers that are stored on the stack
+```rust
+fn main() {
+    let s = String::from("hello"); // s comes into scope
+    
+    takes_ownership(s); // s's value moves into the function...
+                        // ... and so is no longer valid here
+                        
+    let x = 5;          // x comes into scope
 
+    makes_copy(x);      // x would move into the function,
+                        // but i32 is Copy, so it's okay to
+                        // still use x afterward
+}// Here, x goes out of scope, then s. But because s's value was moved,
+// nothing special happens.
 
+fn takes_ownership(some_string: String ){
+    println!("{}!",some_string);
+} //Here, some_string goes out of scope and `drop` is called. The backing
+// memory is freed.
 
+fn makes_copy(some_integer: i32){  // some_integer comes into scope
+    println!("{}", some_integer);
+}//Here, some_integer goes out of scope. Nothing special happens.
+```
 
+####Return values and scope
+Return values can also transfer ownership. If we return a string we are giving ownership
 
+What if we want to let a function use a value and not take ownership? We can pass it as a parameter and then return it, but there is a better way
 
+####References and borrowing
+With references we allow to refer to some value without taking ownership of it
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let len = calculate_length(&s1);
+
+    println!("length of {} is {} ", s1, len);
+}
+fn calculate_length(s: &String) -> usize {  // s is a reference to a String
+    s.len()
+}// Here, s goes out of scope. But because it does not have ownership of
+// what it refers to, nothing happens.
+```
+Having references as function parameters is called **borrowing**.
+References are also immutable by default. If we try to modify it, we get an error
+
+We can create a mutable reference:
+```rust
+fn main(){
+    let mut s = String::from("hello");
+    change(&mut s);
+    println!("{} ", s);
+}
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+The variable must be mutable, the reference must be mutable and the function must accept a mutable reference.
+Note: We can only have one mutable reference to a particular piece of data
+
+####Rules of reference
+* At any given time, we can have either but not both of: one mutable reference or any number of immutable references
+* References must always be valid
+
+###Slice Type
+```rust
+fn main() {
+    let s = String::from("hello world");
+
+    let slice= &s[..5];
+    println!("slice1: {}", slice); // hello
+    let slice = &s[6..9];
+    println!("slice1: {}", slice); // wor
+    let slice = &s[6..];
+    println!("slice1: {}", slice); //world
+    //Full string
+    println!("{}", &s[..]);
+    println!("First word: {}", first_word(&s));
+}
+
+fn first_word(s: &String) -> &str {
+   let bytes = s.as_bytes();
+
+   for (i, &item) in bytes.iter().enumerate(){
+       if item == b' ' {
+           return &s[0..i];
+       }
+   }
+   &s[..]
+}
+```
+Note: Strings are a type of slices
+
+###Stuctures
+Similar to tupples, can group different data types but we name each piece of data
+```rust
+struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+
+fn main() {
+    let mut user1 = User {
+        email: String::from("some@example.com"),
+        username: String::from("user123"),
+        active: true,
+        sign_in_count: 1,
+    }; 
+    //changing value
+    user1.email = String::from("someone@example.com");
+}
+
+fn build_ser(email: String, username: String) -> User {
+    User {//We can use field init shorthand
+        email, //If the struct value and parameter have same name
+        username,//we can use it like this 
+        active: true,
+        sign_in_count: 1,
+    }
+}
+```
+
+####Struct update
+To update only some values of a struct, we can:
+```rust
+let user2 = User {
+	email: String::from("another@example.com"),
+	username: String::from("anotherusername567"),
+	active: user1.active,
+	sign_in_count: user1.sign_in_count,
+};
+```
+Or we can update the value like this
+```rust
+let user2 = User {
+	email: String::from("another@example.com"),
+	username: String::from("anotherusername567"),
+	..user1
+};
+```
+
+####Tupple Structs
+```rust
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+let black = Color(0, 0, 0);
+let origin = Point(0, 0, 0);
+```
+####Derived traits
+If we try to just print the rect, it will error. println! uses formatting known as **Display**. We can also add a derive debug and print with **{:?}** or **{:#?}**
+```rust
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    heigh: u32,
+}
+fn main() {
+    let rect1 = Rectangle { width: 30, heigh: 50 };
+
+    println!("Rectangle area {:?}", rect1);
+}
+```
+
+####Struct Methods
+We can define a method, a function for the struct, which first parameter is always self
+```rust
+impl Rectangle{
+    fn area(&self) ->  u32 {
+        self.width * self.heigh
+    }
+}
+println!("Rectangle area {}", rect1.area());
+```
+impl -> implementation
+In this example we borrow the Rectangle since we only want to read it, not modify if (would have to be mutable)
+ Given the receiver and name of a method, Rust can figure out definitively whether the method is
+reading (&self), mutating (&mut self), or consuming ( self).
+
+####Associated functions
+We can define blocks of **impl** that don't take self as a parameter, called associated functions
+To call associated functions we use ::
+```rust
+impl Rectangle{
+    fn square(size: u32) ->  Rectangle {
+       Rectangle {width: size, heigh: size} 
+    }
+}
+fn main(){
+    let sq = Rectangle::square(3);
+    println!("Square {:#?}", sq);
+}
+```
 
 
 
