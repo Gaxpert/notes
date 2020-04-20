@@ -5,7 +5,7 @@ author: Gaxpert
 ---
 
 # Rust
-##Basics
+## Basics
 Install
 `curl https://sh.rustup.rs -sSf | sh`
 
@@ -21,7 +21,7 @@ Version
 Documentation
 `rustup doc`
 
-##Cargo
+## Cargo
 Create new project
 `cargo new hello_cargo --bin`
 
@@ -43,7 +43,7 @@ Add dependency to 'Cargo.toml'. Cargo will fetch the dependency.
 Check documentation on dependencies 
 `cargo doc --open`
 
-##Getting Started
+## Getting Started
 Import standard lib, IO
 `use std::io;`
 
@@ -94,13 +94,13 @@ let x = 6; //Ok
 
 The difference between **shadowing** a variable with **let** and making it **mut** is that **let** creates a new variable(which means we can also change the data type)
 
-###Data Types
+### Data Types
 Every value as a certain data type, divided in two subsets: **scalar** and **compound**
 
-####Scalar types
+#### Scalar types
 Represent a single value. It has 4 types: Integers, floating-point numbers, booleans and chars
 
-#####Integer Types
+##### Integer Types
 Signed -> i
 Unsigned -> u
 Length -> 8, 16, 32, 64
@@ -114,15 +114,19 @@ ex: i8, u16, u32, i64
 |    Binary    |    0b1111_0000 |        
 |    Byte(u8 only)    |    b'A'          |        
 
-####Floating point
+##### Conversion
+Int to float
+`let len = len as f32`
+
+#### Floating point
 Primitive types: f32 and f64
 
-####Char Type
+#### Char Type
 Chars use single quotes and strings use double quotes
 
-###Compound Types
+### Compound Types
 Compound types can group multiple values into one type. Rust has two primitive compound types: tuples and arrays
-####Tuple
+#### Tuple
 Can have elements of different types
 ```rust
 fn main() {
@@ -140,7 +144,7 @@ fn main() {
 	let five = x.0;
 }
 ```
-####Array
+#### Array
 All elements must have same type. Fixed lenght, can't grow or shrink
 Arrays are useful when you want your data allocated on the stack rather than the heap, or ensure a fixed number of elements
 ```rust
@@ -148,7 +152,7 @@ let arr = [1,2,3];
 let first = arr[0];
 ```
 
-###Functions
+### Functions
 Uses **snake case** convetion. All letters are lowercase and underscores separators
 We must declare the type of each parameter
 ```rust
@@ -156,11 +160,11 @@ fn another_function(x: i32, y: i32) {
 		println!("Another func {}  {} ",x,y);
 	}
 ```
-####Statements and expressions
+#### Statements and expressions
 Statements -> instructions to perform some action and do **not** return a value
 Expressions -> Evaluate to a resulting value. Expressions do not end with a semicolon
 
-####Return values
+#### Return values
 We don't name return values, but we declare their type after an arrow
 The return value is synonymous with the value of the final expression of the block of the function. If we want to return early we use the **return** keyword
 ```rust
@@ -169,7 +173,7 @@ fn five() -> i32{
 }
 ```
 
-###Control flow
+### Control flow
 Note:Rust only checks for the first true condition.
 ```rust
 fn main() {
@@ -198,7 +202,7 @@ fn main() {
 }
 ```
 
-###Loops
+### Loops
 Three types of loops: loop, while and for
 ```rust
 loop{
@@ -228,8 +232,8 @@ for n in(1..9).rev(){
 }
 ```
 
-##Ownership
-###Rules
+## Ownership
+### Rules
 * Each value in Rust has a variable called its **owner**
 * There can be only **one** owner at a time
 * When the owner goes out of scope, the value will be dropped
@@ -281,12 +285,12 @@ fn makes_copy(some_integer: i32){  // some_integer comes into scope
 }//Here, some_integer goes out of scope. Nothing special happens.
 ```
 
-####Return values and scope
+#### Return values and scope
 Return values can also transfer ownership. If we return a string we are giving ownership
 
 What if we want to let a function use a value and not take ownership? We can pass it as a parameter and then return it, but there is a better way
 
-####References and borrowing
+#### References and borrowing
 With references we allow to refer to some value without taking ownership of it
 ```rust
 fn main() {
@@ -317,11 +321,11 @@ fn change(some_string: &mut String) {
 The variable must be mutable, the reference must be mutable and the function must accept a mutable reference.
 Note: We can only have one mutable reference to a particular piece of data
 
-####Rules of reference
+#### Rules of reference
 * At any given time, we can have either but not both of: one mutable reference or any number of immutable references
 * References must always be valid
 
-###Slice Type
+### Slice Type
 ```rust
 fn main() {
     let s = String::from("hello world");
@@ -350,7 +354,7 @@ fn first_word(s: &String) -> &str {
 ```
 Note: Strings are a type of slices
 
-###Stuctures
+### Stuctures
 Similar to tupples, can group different data types but we name each piece of data
 ```rust
 struct User {
@@ -381,7 +385,7 @@ fn build_ser(email: String, username: String) -> User {
 }
 ```
 
-####Struct update
+#### Struct update
 To update only some values of a struct, we can:
 ```rust
 let user2 = User {
@@ -400,14 +404,14 @@ let user2 = User {
 };
 ```
 
-####Tupple Structs
+#### Tupple Structs
 ```rust
 struct Color(i32, i32, i32);
 struct Point(i32, i32, i32);
 let black = Color(0, 0, 0);
 let origin = Point(0, 0, 0);
 ```
-####Derived traits
+#### Derived traits
 If we try to just print the rect, it will error. println! uses formatting known as **Display**. We can also add a derive debug and print with **{:?}** or **{:#?}**
 ```rust
 #[derive(Debug)]
@@ -422,7 +426,7 @@ fn main() {
 }
 ```
 
-####Struct Methods
+#### Struct Methods
 We can define a method, a function for the struct, which first parameter is always self
 ```rust
 impl Rectangle{
@@ -437,7 +441,7 @@ In this example we borrow the Rectangle since we only want to read it, not modif
  Given the receiver and name of a method, Rust can figure out definitively whether the method is
 reading (&self), mutating (&mut self), or consuming ( self).
 
-####Associated functions
+#### Associated functions
 We can define blocks of **impl** that don't take self as a parameter, called associated functions
 To call associated functions we use ::
 ```rust
@@ -451,6 +455,427 @@ fn main(){
     println!("Square {:#?}", sq);
 }
 ```
+
+###Enum
+Enums allow to define a type by enumerating its possible values.
+```rust
+enum IpAddrKind {
+    V4,
+    V6,
+}
+fn main() {
+    let four = IpAddrKind::V4;
+    let six = IpAddrKind::V6;
+}
+```
+The variants of enum are namespaced under its identifier, and we use double colon to separate them.
+We can also associate values with enums, any kind of data
+```rust
+enum IpAddrKind {
+    V4(String),
+    V6(String),
+}
+//or
+enum IpAddr {
+	V4(u8, u8, u8, u8),
+	V6(String),
+}
+fn main() {
+    let home = IpAddrKind::V4(String::from("127.0.0.1"));
+    let loopback = IpAddrKind::V6(String::from("::1"));
+}
+```
+
+We can also define impl with enum
+```rust
+enum Message {
+	Quit,
+	Move { x: i32, y: i32 },
+	Write(String),
+	ChangeColor(i32, i32, i32),
+}
+impl Message {
+	fn call(&self) {
+	// method body would be defined here
+	}
+}
+let m = Message::Write(String::from("hello"));
+m.call();
+```
+
+#### Option enum
+Rust doesnt have null values, but has an enum to encode the concept of null(of a value being present or absent)
+```rust
+let some_string = Some("a string");
+let absent_number: Option<i32> = None;
+```
+Option<T> (where T can be any type) its a generic type parameter
+
+#### Match 
+Match compares a value against a series of patterns and the executes the corresponding arm.
+Match stops at the first matched value
+```rust
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+fn value_in_cents(coin: Coin) ->  u32 {
+    match coin {
+        Coin::Penny => 1{
+            println!("Lucky penny");
+            1
+        },
+        Coin::Nickel => 5,
+        Coin::Dime  => 10,
+        Coin::Quarter => 25,
+    }
+}
+```
+
+A useful feature of match arms is that they can bind to the parts of the values.
+```rust
+fn value_in_cents(coin: Coin) -> u32 {
+match coin {
+			Coin::Penny => 1,
+			Coin::Nickel => 5,
+			Coin::Dime => 10,
+			Coin::Quarter(state) => {
+				println!("State quarter from {:?}!", state);
+				25
+		},
+	}
+}
+```
+Matching with option
+```rust
+fn plus_one(x: Option<i32>) ->  Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i+1),
+    }
+}
+fn main() {
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+}
+```
+The _ placeholder. It can match any value, while the () is just the unit, so nothing will happen in the _ case
+```rust
+match some_u8_value {
+	1 => println!("one"),
+	3 => println!("three"),
+	5 => println!("five"),
+	7 => println!("seven"),
+	_ => (),
+}
+```
+If we want to match only one case, and use a placeholder for all the other cases. Instead of using match with one arm and a placeholder we can use if let
+Its just a syntax sugar in cases we want to match only one case and ignore all the other
+```rust
+if let Some(3) = some_u8_value{
+	println!("three");
+}
+```
+
+### Modules
+A module is a namespace that contains definitions of function or types (like structs and enums), which can be public or private
+* **mod** declares a new module
+* By default is private, the **pub** keyword makes it visible outside its namespace
+* **use** keyword brings modules, or the definitions inside modules, into scope
+Create library
+```rust
+cargo new LIB --lib
+```
+#### Rules of modules
+* If a module X has no submodules, you should put the declarations for X in a file named X.rs
+* If a module named X has submodules, you should put the declaration for X in X/mod.rs
+
+### Public
+Making a module public. Module must be public and function too
+```rust
+pub mod client;
+mod network;
+pub fn connect() {
+}
+```
+#### Rules of privacy
+* If an item is public, it can be accessed though any of its parent modules
+* If an item is private, it can be accessed only by its immediate parent module and any of the parent's child modules
+```rust
+mod outermost {
+    pub fn middle_function() {}
+    fn middle_secret_function() {}
+    mod inside {
+        pub fn inner_function() {}
+        fn secret_function() {}
+    }
+}
+fn try_me() {
+    outermost::middle_function(); //Works, although outermost is not public. The rule 
+                                  //states that the root module can be accessed
+    outermost::middle_secret_function(); //Error, is private
+    outermost::inside::inner_function(); //Error, inside is private
+    outermost::inside::secret_function();//Error, is private
+}
+```
+
+### Refering to names
+Instead of using the full name `a::series::of::nested_modules();`, we can use the **use** keyword
+```rust
+pub mod a {
+		pub mod series {
+			pub mod of {
+				pub fn nested_modules() {}
+		}
+	}
+}
+use a::series::of;
+fn main() {
+	of::nested_modules();
+}
+```
+The **use** keyword brings only what we have specified into scope
+```rust
+use a::series::of::nested_modules;
+fn main() {
+	nested_modules();
+}
+```
+We can specify exactly what to bring into scope
+```rust
+enum TrafficLight {
+	Red,
+	Yellow,
+	Green,
+}
+use TrafficLight::{Red, Yellow};
+```
+Or bring all 
+```rust
+use TrafficLight::*;
+```
+### Super
+We can specify the root with
+```rust
+::client::connect();
+```
+Or go up one dir with
+```rust
+codesuper::client::connect();
+```
+
+### Common Collections
+Most other data structures represent on specific value, while collections can contain multiple values. Unlike array and tupple types, collections are stored in the heap, which means the amount of data does not need to be known at compile time and can grow or shrink.
+Each kind of collection has different costs and capabilities
+#### Vector
+Vector or Vec<T> allows to store more than one value in a single data structure that puts all values next to each other in memory. 
+Vector can only store values of the same type
+
+Creating a vector
+```rust
+let v: Vec<i32> = Vec::new();
+```
+Rust can infer the type
+```rust
+let v = vec![1, 2, 3];
+```
+Updating elements
+```rust
+let mut v = Vec::new();
+v.push(5);
+v.push(6);
+```
+Out of scope
+```rust
+{
+	let v = vec![1, 2, 3, 4];
+	// do stuff with v
+} // <- v goes out of scope and is freed here
+```
+Reading from a vector
+```rust
+let v = vec![1, 2, 3, 4, 5];
+let third: &i32 = &v[2];
+let third: Option<&i32> = v.get(2);
+```
+Iterating over a vector
+```rust
+let v = vec![100, 32, 57];
+for i in &v {
+	println!("{}", i);
+}
+```
+Iterate over mutable references
+```rust
+let mut v = vec![100, 32, 57];
+for i in &mut v {
+	*i += 50;
+}
+```
+If we need to store elements of different types in a vector, we can use enum!
+```rust
+enum SpreadsheetCell {
+	Int(i32),
+	Float(f64),
+	Text(String),
+}
+let row = vec![
+	SpreadsheetCell::Int(3),
+	SpreadsheetCell::Text(String::from("blue")),
+	SpreadsheetCell::Float(10.12),
+];
+```
+Note: If we don't know the exhaustive set of types the program will get at runtime t store in a vector, the enum technique won't work. For that we will use traits
+
+### Strings
+Create string
+```rust
+let mut s = String::new();
+```
+```rust
+let data = "initial contents";
+let s = data.to_string();
+//or
+let s = String::from("initial contents");
+
+// the method also works on a literal directly:
+let s = "initial contents".to_string();
+```
+Append
+```rust
+let mut s = String::from("lo");
+s.push('l');
+```
+Concatenate
+```rust
+let s1 = String::from("Hello, ");
+let s2 = String::from("world!");
+let s3 = s1 + &s2; // note s1 has been moved here and can no longer be used
+```
+Note: the **+** uses the add method
+Better to use format
+```rust
+let s1 = String::from("tic");
+let s2 = String::from("tac");
+let s3 = String::from("toe");
+let s = format!("{}-{}-{}", s1, s2, s3);
+```
+In rust we can't access index chars in strings directly due to possible different byte sizes.
+But we can iterate over chars
+```rust
+for c in "नमस्ते".chars() {
+	println!("{}", c);
+}
+```
+### Hash Maps
+The type HashMap<K, V> stores a mapping of keys of type K to values of Type V
+All of the Keys and all of the values must have the same type
+Create and add elements
+```rust
+use std::collections::HashMap;
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+```
+Another way to construct hash map is using the collect method on a vector of tupples
+We use **zip** to create a vector of tupples were Blue is paired with 10, then collect the result
+```rust
+use std::collections::HashMap;
+let teams = vec![String::from("Blue"), String::from("Yellow")];
+let initial_scores = vec![10, 50];
+let scores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
+```
+Note: the _ will make rust infer the type
+
+#### Ownership
+For types that implement the **Copy** trait, such as i32, the values are copied into the hash map. For owned values, such as **String**, the values will be moved and the hash map will be the owner of these values.
+```rust
+use std::collections::HashMap;
+let field_name = String::from("Favorite color");
+let field_value = String::from("Blue");
+let mut map = HashMap::new();
+map.insert(field_name, field_value);
+// field_name and field_value are invalid at this point, try using them and
+// see what compiler error you get!
+```
+Note: If we insert references to values into the hash map, the values won't be moved into the hash map. But the references point to must be valid as long the hash map is valid
+
+Accessing values
+```rust
+use std::collections::HashMap;
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+let team_name = String::from("Blue");
+let score = scores.get(&team_name);
+```
+Iterate
+```rust
+for (key, value) in &scores{
+		println!("{}: {} ", key, value);
+	}
+```
+Overwritting a value
+```rust
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Blue"), 25);
+```
+Only inserting a value if the key has no value
+```rust
+scores.insert(String::from("Blue"), 10);
+scores.entry(String::from("Blue")).or_insert(50);
+```
+The **or_insert** method returns a mutable reference to the value if it exists, if doesn't exist inserts the parameter as the new value for this key and returns a mutable reference to the new value.
+
+Updating based on old value
+```rust
+for word in text.split_whitespace(){
+		let count = map.entry(word).or_insert(0);
+		*count += 1;
+} // mutable reference goes out of scope after the for loop
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
