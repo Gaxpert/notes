@@ -945,6 +945,14 @@ fn read_username_from_file() -> Result<String, io::Error> {
 The only difference between using **match** and the shorcut **?** is that the shortcut goes through the **from** function, defined in the From trait in the std, which is used to convert errors. When the ? operator calls the from function, the error type received is converted into the error type defined in the return type of the current function.
 Note: the **?** operator can only be used in functions that have a return type of **Result** 
 
+
+## Network
+All the networking related functionality is located in the `std:net` namespace, while reading and writing to sockets uses `std::io`. Important features:
+* **IpAddr** which represents a generic IP address (IP and port on a host)
+* **SocketAddr** which represents a generic socket address
+* **TcpListener** and **TcpStream** for communicating over TCP
+* **UdpSocket** for UDP
+
 ### Command line minigrep
 Get args / argv. The function in `std::env::args` returns an iterator with the args
 ```rust
