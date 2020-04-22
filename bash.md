@@ -109,6 +109,18 @@ case $1 in)
 		echo Matches what*  (wildcard expansion) ;;
 esac
 ```
+### Eliminate duplicate lines
+```sh
+sort file.log | uniq -u
+```
+### Ez loop
+```sh
+for i in {1..300}
+do
+	echo "bla"
+	done
+```
+
 
 
 

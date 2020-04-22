@@ -189,6 +189,9 @@ Tell the binary where to find a lib since its on a non standard directory
 Get contents of raw data
 `objdump -s --section .rodata FILE`
 
+Dependencies for linking / libraries
+`ldd FILE`
+
 
 
 

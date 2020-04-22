@@ -340,3 +340,6 @@ With NVidia 2060 RTX
 `sudo pacman -S lib32-nvidia-utils lib32-nvidia-libgl lib32-mesa-demos libva-vdpau-driver
 
 `
+
+### Exploitation
+In linux, if we get different addresses for our stack, it probably means that we have the `grsecurity patch``

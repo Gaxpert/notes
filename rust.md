@@ -152,6 +152,14 @@ let arr = [1,2,3];
 let first = arr[0];
 ```
 
+#### Print
+Print memory address
+```rust
+println!("{:p}", &x);
+```
+
+
+
 ### Functions
 Uses **snake case** convetion. All letters are lowercase and underscores separators
 We must declare the type of each parameter
@@ -838,49 +846,200 @@ for word in text.split_whitespace(){
 } // mutable reference goes out of scope after the for loop
 ```
 
+## Errors
+Rust groups errors in two types:
+* Recoverable. Ex: File not found
+* Unrecoverable. Ex: location beyond array
+
+Rust doesn't use exceptions. Instead it has the type **Result<T, E>** for recoverable errors and the macro **panic!** for unrecoverable ones.o
+
+### Unrecoverable errors
+The panic! macro will print a failure message, unwind and clean up the stack, and then quit.
+By default, when a panic occurs, the program starts unwinding (cleaning up the data from each function). But this process is a lot of work, the alternative is an **abort** which ends the program without cleaning up (leaving the cleaning for the OS). 
+Note: If we need to make the binary as small as possible we can switch from unwinding to aborting by adding "panic = 'abort' " in **Cargo.toml**
+
+Sometimes a panic can come from a function in the library. To perform a backtrace in our code:
+```sh
+RUST_BACKTRACE=1 cargo run
+```
+In order to get backtrace, debug symbols must be enabled. Debug symbols are enabled by default when using `cargo build` or `cargo run` without the `--release` flag
+
+### Recoverable errors
+The Result enum is defined with two variants: Ok(T) and Err(E)
+The T and E are generic type parameters
+```rust
+use std::fs::File; 
+
+fn main() {
+    let f = File::open("hello.txt");
+
+    let f = match f {
+        Ok(file) => file,
+        Err(error) => {
+            panic!("Problem openning file: {:?}", error)
+        },
+    } ;
+}
+```
+Matching on different errors
+```rust
+let f = match f {
+		Ok(file) => file,
+		Err(ref error) if error.kind() == ErrorKind::NotFound =>  {
+				match File::create("hello.txt") {
+						Ok(fc) => fc,
+						Err(e) => {
+								panic!("Tried to create a file but {:?}", e)
+						},
+				}
+		},
+		Err(error) =>{
+				panic!(
+						"Problem {:?}", error
+				) 
+		},
+} ;
+```
+The condition `if error.kind() == ErrorKind::NotFound` is called a **match guard**. An extra condition on a match arm that further refines the arm's pattern
+
+#### Shortcuts for panic on error
+If result is Ok, will return value. If its and error calls panic
+```rust
+use std::fs::File;
+fn main() {
+	let f = File::open("hello.txt").unwrap();
+}
+```
+We can also use expect, similar to unwrap but let us provide an error message
+```rust
+let f = File::open("hello.txt").expect("Failed to open hello.txt");
+```
+
+#### Propagating Errors
+Instead of handling the error inside the function, we can return the error and let the calling code decide
+```rust
+fn read_username_from_file() ->  Result<String, io::Error> {
+    let f = File::open("hello.txt");
+
+    let mut f = match f {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut s = String::new();
+    match f.read_to_string(&mut s) {
+        Ok(_) => Ok(s),
+        Err(e) => Err(e),
+    }
+}
+```
+Shortcut for propagating errors
+```rust
+fn read_username_from_file() -> Result<String, io::Error> {
+	let mut f = File::open("hello.txt")?;
+	let mut s = String::new();
+	f.read_to_string(&mut s)?;
+	Ok(s)
+	}
+```
+The only difference between using **match** and the shorcut **?** is that the shortcut goes through the **from** function, defined in the From trait in the std, which is used to convert errors. When the ? operator calls the from function, the error type received is converted into the error type defined in the return type of the current function.
+Note: the **?** operator can only be used in functions that have a return type of **Result** 
+
+### Command line minigrep
+Get args / argv. The function in `std::env::args` returns an iterator with the args
+```rust
+use std::env;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    println!("{:?}", args);
+    
+}
+```
+Opening and reading file
+```rust
+use std::env;
+use std::fs::File;
+use std::io::prelude::*;
+
+//main blabla
+let mut f = File::open(filename).expect("file not found");
+
+let mut contents = String::new();
+f.read_to_string(&mut contents)
+	.expect("Something wrong reading the file");
+```
 
 
 
+## Pratical examples / Cool crates
+### Regex
+Check if pattern is found
+```rust
+extern crate regex; // add   regex = "1.3.7" to cargo.toml
+use regex::Regex;
 
+fn main() {
+    let re = Regex::new(r"\w{5}").unwrap(); // get raw string. If we don't use 
+                                   // raw we need to double escape "\\w"
+    let text = "long text to check";
 
+    println!("Found match? {}",re.is_match(text) );
+}
+```
+Find the match
+```rust
+fn main() {
+    let re = Regex::new(r"(\w{5})").unwrap(); // the () in regex is to return the 
+                                              // match instead of true/false
+    let text = "long text to check";
 
+    // println!("Found match? {}",re.is_match(text) );
+    match re.captures(text) {
+        Some(caps) => println!("Found match: {}", caps.get(0).unwrap().as_str()),
+        None => println!("Couldn't find a match")
+    }
+}
+```
+### term
+Terminal colors
+```rust
+extern crate term;
 
+fn main() {
+    let mut t = term::stdout().unwrap();
+    t.fg(term::color::GREEN).unwrap();
+    write!(t, "hello, ").unwrap();
+    
+    t.fg(term::color::RED).unwrap();
+    writeln!(t, "WORLD ").unwrap();
 
+    t.reset().unwrap();
+}
+```
+### Run command
+```rust
+use std::process::Command;
 
+fn main() {
+		//Build command py
+    let mut cmd = Command::new("python");
+    cmd.arg("test.py");
+		//Build command bash
+    //let mut cmd = Command::new("ls");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //execute command
+    match cmd.output(){
+        Ok(o) => {
+            // o.stdout --> gives vector of bytes
+            unsafe {
+              // String::from_utf8_unchecked(o.stdout); Doesn't check if output is utf8
+                println!("Output: {}", String::from_utf8_unchecked(o.stdout));
+            } 
+        } 
+        Err(e) => println!("Err: {}", e)
+    }
+}
+```
 
 
