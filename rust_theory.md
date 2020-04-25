@@ -1,10 +1,10 @@
 ---
-title: Rust
+title: Rust_theory
 date: 2020-04-10 08:13:35+01:00
 author: Gaxpert
 ---
 
-# Rust
+# Rust Learning
 ## Basics
 Install
 `curl https://sh.rustup.rs -sSf | sh`
@@ -945,6 +945,88 @@ fn read_username_from_file() -> Result<String, io::Error> {
 The only difference between using **match** and the shorcut **?** is that the shortcut goes through the **from** function, defined in the From trait in the std, which is used to convert errors. When the ? operator calls the from function, the error type received is converted into the error type defined in the return type of the current function.
 Note: the **?** operator can only be used in functions that have a return type of **Result** 
 
+### Closures
+Closures are anonymous functions you can save in a variable or pass as arguments to other functions. Unlike functions, closures can capture variables from the scope they are called in.
+```rust
+fn add_one_v1 (x: u32) -> u32 { x + 1 }
+let add_one_v2 = |x: u32| -> u32 { x + 1 };
+let add_one_v3 = |x| { x + 1 };
+let add_one_v4 = |x| x + 1 ;
+```
+All closes implement at least one of the traits
+* **Fn**: Borrows values from the environment immutably
+* **FnMut**: Can change the environment because it mutably borrows values
+* **FnOnce**: Consumes the variables it captures from its enclosing scope. To consume the captured variables, the closure takes ownership of these variables and move them into the closure when it is defined. It can only be called once
+
+When you create a closure, Rust infers which trait to use based on how the closure uses the values. All closures implement **FnOnce** because all can be called at least once. Closures that don't move the captured variables also implement **FnMut**, and closures that don't need mutable access to the captured variables also implement **Fn**
+If you want to force the closure to take ownership of the values it uses in the environment, we can use the keyword **move** before the parameter list. Mostly used when passing a closure to a new thread
+
+Capture the environment with closures. We can use variables that are not passed in as parameters
+```rust
+fn main() {
+	let x = 4;
+	let equal_to_x = |z| z == x;
+}
+```
+
+### Iterators
+The iterator pattern allows to perform a task on a sequence of items. 
+In Rust, the iterators are lazy, meaning that they have no effect until you call methods that consume the iterator to use it up.
+We can call the **next** method on iterators directly, consuming the next item on sequence (the iterator its mutable since it needs to change its internal state).
+The standard library implements several methods that use the **next** method. Methods that call **next** are referred as **consuming adaptors** because calling them uses up the iterator.
+```rust
+let v1 = vec![1, 2, 3];
+let v1_iter = v1.iter();
+let total: i32 = v1_iter.sum();
+assert_eq!(total, 6);
+```
+
+Other methods, known as **iterator adaptors** allow you to change iterators into different kind of iterators. But because iterators are lazy, you have to call one of the consuming adaptor methods to get results from calls to iterator adaptors.
+```rust
+let v1: Vec<i32> = vec![1, 2, 3];
+
+v1.iter().map(|x| x + 1); //Doesnt do anything since we dont consume the iterator
+v1.iter().map(|x| x + 1).collect; //Consumes iterator and collects values into
+																	// a collection data type
+```
+
+#### Filter iterators
+We take ownership of a vector of shoes and shoe size. Next we call **into_iter** to create an iterator that takes ownership of the vector. Then we call filter to adapt that iterator into a new iterator that only contains elements for which the closure returns true. The closure captures the show_size env parameter and compares the value, keeping the shoe size we specified. Finally we call **collect** to gather the result
+```rust
+fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: u32) ->  Vec<Shoe> {
+    shoes.into_iter()
+        .filter(|s| s.size == shoe_size)
+        .collect()
+}
+```
+Ex2: minigrep. We pass a query and the contents to search. Return the lines in contents that match query
+```rust
+pub fn search<'a>(query: &str, contents: &'a str) ->  Vec<&'a str> {
+    contents.lines()
+        .filter(|line| line.contains(query))
+            .collect()
+}
+```
+
+#### Iterate through lines string
+```rust
+for line in contents.lines(){
+		if line.contains(query){
+
+		}
+}
+```
+
+#### Iterators vs Loops
+Iterators are slightly faster than loops since, although a high level abstraction, gets compiled down to roughly the same code as if you wrote the low-level code yourself. Iterators are one of Rust's **zero-cost abstractions**.
+
+### Print to standard error
+```rust
+eprintln!("Problem parsing arguments: {}", err);
+```
+
+
+
 
 ## Network
 All the networking related functionality is located in the `std:net` namespace, while reading and writing to sockets uses `std::io`. Important features:
@@ -953,101 +1035,18 @@ All the networking related functionality is located in the `std:net` namespace, 
 * **TcpListener** and **TcpStream** for communicating over TCP
 * **UdpSocket** for UDP
 
-### Command line minigrep
-Get args / argv. The function in `std::env::args` returns an iterator with the args
+## Threads
+Threads example
 ```rust
-use std::env;
+use std::thread;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    println!("{:?}", args);
-    
-}
-```
-Opening and reading file
-```rust
-use std::env;
-use std::fs::File;
-use std::io::prelude::*;
-
-//main blabla
-let mut f = File::open(filename).expect("file not found");
-
-let mut contents = String::new();
-f.read_to_string(&mut contents)
-	.expect("Something wrong reading the file");
-```
-
-
-
-## Pratical examples / Cool crates
-### Regex
-Check if pattern is found
-```rust
-extern crate regex; // add   regex = "1.3.7" to cargo.toml
-use regex::Regex;
-
-fn main() {
-    let re = Regex::new(r"\w{5}").unwrap(); // get raw string. If we don't use 
-                                   // raw we need to double escape "\\w"
-    let text = "long text to check";
-
-    println!("Found match? {}",re.is_match(text) );
-}
-```
-Find the match
-```rust
-fn main() {
-    let re = Regex::new(r"(\w{5})").unwrap(); // the () in regex is to return the 
-                                              // match instead of true/false
-    let text = "long text to check";
-
-    // println!("Found match? {}",re.is_match(text) );
-    match re.captures(text) {
-        Some(caps) => println!("Found match: {}", caps.get(0).unwrap().as_str()),
-        None => println!("Couldn't find a match")
+    for i in 1..10{
+        let handle = thread::spawn(move || {
+            println!("Thread: {}", i);
+        });
+        let _ = handle.join();
     }
 }
 ```
-### term
-Terminal colors
-```rust
-extern crate term;
-
-fn main() {
-    let mut t = term::stdout().unwrap();
-    t.fg(term::color::GREEN).unwrap();
-    write!(t, "hello, ").unwrap();
-    
-    t.fg(term::color::RED).unwrap();
-    writeln!(t, "WORLD ").unwrap();
-
-    t.reset().unwrap();
-}
-```
-### Run command
-```rust
-use std::process::Command;
-
-fn main() {
-		//Build command py
-    let mut cmd = Command::new("python");
-    cmd.arg("test.py");
-		//Build command bash
-    //let mut cmd = Command::new("ls");
-
-    //execute command
-    match cmd.output(){
-        Ok(o) => {
-            // o.stdout --> gives vector of bytes
-            unsafe {
-              // String::from_utf8_unchecked(o.stdout); Doesn't check if output is utf8
-                println!("Output: {}", String::from_utf8_unchecked(o.stdout));
-            } 
-        } 
-        Err(e) => println!("Err: {}", e)
-    }
-}
-```
-
 

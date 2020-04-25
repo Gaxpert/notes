@@ -15,7 +15,7 @@ shell generator in go
 
 
 
-#OSINT
+# OSINT
 
 check for usernames and mails
 [GitHub - iojw/socialscan: Check email address and username availability on online platforms with 100% accuracy](https://github.com/iojw/socialscan)
@@ -23,7 +23,7 @@ check for usernames and mails
 
 
 
-#Phishing
+# Phishing
 go phsihing toolkit
 [GitHub - gophish/gophish: Open-Source Phishing Toolkit](https://github.com/gophish/gophish)
 

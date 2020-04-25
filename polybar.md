@@ -4,11 +4,11 @@ date: 2020-03-31 00:53:22+01:00
 author: Gaxpert
 ---
 
-### Polybar
+# Polybar
 
 Use `gucharmap`  `View > Show only glyphs from this font` and `Ctrl-F` to find
 
-#Icons
+### Icons
 
 Search for icons https://fontawesome.com/icons?d=gallery&s=brands&m=free.
 
@@ -19,7 +19,7 @@ To install this fonts run
 
 
 
-#Formatting
+### Formatting
 
 https://github.com/polybar/polybar/wiki/Formatting
 

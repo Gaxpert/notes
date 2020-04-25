@@ -4,9 +4,9 @@ date: 2020-04-06 05:51:36+01:00
 author: Gaxpert
 ---
 
-### weechat
+# weechat
 
-#setup
+# setup
 
 Generate key
 `openssl ecparam -genkey -name prime256v1 -out ~/.weechat/ecdsa.pem`

@@ -6,7 +6,7 @@ author: Gaxpert
 
 # Python
 
-##VirtualEnvWarpper
+## VirtualEnvWarpper
 start env
 `mkvirtualenv test`
 Leave env
@@ -16,16 +16,16 @@ Activate env
 Remove env
 `rmvirtualenv test`
 
-###Jupyter
+### Jupyter
 List kernels
 `jupyter kernelspec list`
 Remove kernel
 `jupyter kernelspec remove`
 
-##Tips and tricks
-###List vs set
+## Tips and tricks
+### List vs set
 Use **list** to preserve order, **set** otherwise
-###Lists
+### Lists
 Filtering sequence elements
 ```python
 mylist = [1, 4, -5, 10, -7, 2, 3, -1]
@@ -55,10 +55,10 @@ print(ivals)
 # Outputs ['1', '2', '-3', '4', '5']
 ```
 
-###List vs generators
+### List vs generators
 Generators don't load all the data into memory
 
-###Comprehension
+### Comprehension
 List comprehension
 ```python
 [x*x for x in [1,2,3,4,5]]
@@ -91,7 +91,7 @@ With list comprehension. Note: letter and num must match the ones on **for**
 my_list = [(letter, num) for letter in 'abcd' for num in range(4)]
 ```
 
-####Zip
+#### Zip
 Zip creates list of tuples based on the same index
 ```python
 words = ['a', 'b', 'c']
@@ -100,7 +100,7 @@ my_dict = {word: number for word, number in zip (words, numbers)}
 ```
 
 
-###Dictionaries
+### Dictionaries
 Find common elements in dictionaries
 ```python
 a = {
@@ -150,7 +150,7 @@ p2 = { key:value for key,value in prices.items() if key in tech_names }
 
 
 
-###Unpacking
+### Unpacking
 ```python
 p = (4,5)
 x, y = p
@@ -190,7 +190,7 @@ head, *tail = items
 `print(tail)`
 > [10, 7, 4, 5, 9]
 
-###Keeping last N items
+### Keeping last N items
 Keeping a limited history is the perfect use for a collections.deque
 ```python
 from collections import deque
@@ -209,7 +209,7 @@ if __name__ == '__main__':
 				print('-'*20)
 ```
 
-###Finding largest or smallest N items
+### Finding largest or smallest N items
 heapq has two functions - nlargest() and nsmallest().
 These functions are only appropiate when were trying to find a small number of items. In case we only want the smallest or largest it is fast to use min() and max()
 ```python
@@ -235,7 +235,7 @@ cheap = heapq.nsmallest(3, portfolio, key=lambda s: s['price'])
 expensive = heapq.nlargest(3, portfolio, key=lambda s: s['price'])
 ```
 
-####Naming slices
+#### Naming slices
 
 Instead of 
 ```python
@@ -249,7 +249,7 @@ PRICE = slice(40,48)
 cost = int(record[SHARES]) * float(record[PRICE])
 ```
 
-##String manipulation
+## String manipulation
 
 Need to split string into fields, but the delimiters are not consistent. With **re** we can specify multiple separators
 ```python
@@ -271,7 +271,7 @@ filename = os.listdir('.')
 [name for name in filenames if name.endswith(('.c', '.h'))]
 ```
 
-###Match strings the Unix way
+### Match strings the Unix way
 fnmatch can be used to match with wildcard patterns. Provides two functions **fnmatch()** and **fnmatchcase()**
 ```python
 from fnmatch import fnmatch, fnmatchcase

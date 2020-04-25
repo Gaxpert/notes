@@ -19,25 +19,25 @@ Remove beep sound `xset -b`
 OR
   `echo "blacklist pcspkr"  >> /etc/modprobe.d/blacklist.conf`
 
-##Backup
+## Backup
 
 rsync. a: to archive --delete: to delete files deleted on original aswell
 `rsync /path/to/file /backup/folder -a `
 
-#Files
+# Files
 
 gnome-disk for hdds encript/mount etc
 
 filelight to visualize data
 
     Encrypt:
-gpg --cipher-algo AES256 --symmetric filename.tar.gz
+`gpg --cipher-algo AES256 --symmetric filename.tar.gz`
 
     Decrypt:
-gpg --output filename.tar.gz --decrypt filename.tar.gz.gpg
+`gpg --output filename.tar.gz --decrypt filename.tar.gz.gpg`
 
     Destroy file in hdd
-shred -zvu -n  5 FILE
+`shred -zvu -n  5 FILE`
 
 or better
 
@@ -50,16 +50,16 @@ Get list of keys to swap
 Swap control to caps
 	> /usr/bin/setxkbmap -option 'ctrl:nocaps'
 
-##Linux general
+## Linux general
 
 Clean weird filenames in folder `detox -r -v /path/to/your/files`
 
 Curl post req with json
 curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
 
-###Swap
+### Swap
 
-###Create
+### Create
 
 Allocate swap `sudo fallocate -l 1G /swapfile`
 
@@ -73,7 +73,7 @@ If want to make changes permanent, edit /etc/fstab and add
 
 `/swapfile swap swap defaults 0 0`
 
-###Remove swap
+### Remove swap
 
 `sudo swapoff -v /swapfile`
 
@@ -81,40 +81,40 @@ If want to make changes permanent, edit /etc/fstab and add
 
 or remove in /etc/fstab
 
-###Modify swap file size
+### Modify swap file size
 
 `sudo fallocate -l 4G /swapfile`
 
-##Faster read/write with ram
+## Faster read/write with ram
 
 `mkdir -p /mnt/ram`
 
 `mount -t tmpfs tmpfs /mnt/ram -o size=8192M`
 
-###Dont save comman on history
+### Dont save comman on history
 
 Leading space at start `ls` vs  ` ls `
 
-###Open last command in editor
+### Open last command in editor
 
 In case of wanting to modify a long command, `fc` opens the previous command on editor
 
 
-###Check disk usage of every dir
+### Check disk usage of every dir
 
 `du`
 
-###Check file system erros
+### Check file system erros
 
 Note: Never use fsck on a mounted filesystem since it may modify data and crash
 
 `fsck`
 
-###Check file or file system info
+### Check file or file system info
 
 `stat`
 
-###passwd or shadow
+### passwd or shadow
 
 Second field is password
 - 'x' indicates the password is stored in /etc/shadow instead of passwd
@@ -124,7 +124,7 @@ Second field is password
 Third field is user id
 Fourth is group id
 
-###Groups
+### Groups
 
 Located in 
 > /etc/groups
@@ -132,13 +132,13 @@ Located in
 To see groups user belongs 
 `groups`
 
-###Time
+### Time
 
 Pc hardware has a battery-backed real-time clock (RTC)
 Reset RTC kernel UTC clock
 `hwclock --hvtosys --utc`
 
-###Cron
+### Cron
 `15 09 * * * /bin/command`
 1. Minute
 2. Hour
@@ -148,7 +148,7 @@ Reset RTC kernel UTC clock
 6. Command to run
 
 
-###PAM authentication
+### PAM authentication
 Pluggable Authentication Module, located at /etc/pam.conf
 `auth requisite pam_shells.so`
 
@@ -160,61 +160,61 @@ Pluggable Authentication Module, located at /etc/pam.conf
 3. Module
 
 
-#Kernel 
+# Kernel 
 
-###Check kernel boot settings
+### Check kernel boot settings
 
 `cat /proc/cmdline`
 
-###Memory Management Unit (MMU)
+### Memory Management Unit (MMU)
 Kernel assist MMU by breaking down the memory into "pages". The kernel maintains a data structure called a "page table" that containts a mapping of a process virtual page address.
 Page work on demand, or on-demand paging, loads and allocates pages only when needed.
 
-###Page Faults
-####Minor
+### Page Faults
+#### Minor
 Occurs when the desired page is in the main memory but MMU doesn't know where.
 Usually the process can continue without problem.
-####Major
+#### Major
 Occurs when the desired page isn't in memory at all
 
-###Monitor system performance
+### Monitor system performance
 `vmstat`
 By partition
 `vmstat -d`
-###Monitor I/O performance
+### Monitor I/O performance
 `iotop`
-###Packages for monitoring and performance analysis
+### Packages for monitoring and performance analysis
 sar (System Activity Reporter)
 acct(Process accounting)
 Quotas: Limit system resources per-process or per-user (see /etc/security/limits.conf)
-##init
+## init
 
-###systemd
+### systemd
 
 Is goal oriented. You define a target to achieve along with its dependencies.
 
-####Show current systemd configuration search path
+#### Show current systemd configuration search path
 
 `sudo systemctl -p UnitPath show`
 
-####Check if service is enabled 
+#### Check if service is enabled 
 
 `sudo systemctl is-enabled tor.service`
 
-####List all services
+#### List all services
 
 `sudo systemctl  list-unit-files --type service`
 
-###Upstart
+### Upstart
 
 Is reactionary. Receives events and runs jobs based on those events, which in turn generate more events. 	
 
-###Processes
-####lsof
+### Processes
+#### lsof
 
 List open files and processes using them
 `lsof -p PID`
-####Adjusting process priorities
+#### Adjusting process priorities
 The kernel runs each process with a priority level from -20 to 20 (-20 is the highest prio)
 
 NI --> Nice value, hint at kernel scheduler
@@ -223,7 +223,7 @@ Default is 0, it might be useful to swap it in case of big computations so syste
 
 Increasing to 20, PID will have LOWEST prio, not interfering with system functions
 
-##Xorg
+## Xorg
 The X server uses X input extension to manage input from different devices.
 The X input extension creates a "virtual core" that funnels device input to the X server. The core is called the master; the physical devices that you plug in are the slaves
 
@@ -245,25 +245,25 @@ List input properties
 Change properties
 `xinput --set-prop`
 
-###Manipulate keyboard
+### Manipulate keyboard
 X internal keyboard mapping
 `xmodmap`
 The more recent is xkbcomp
 `setxkbmap`
 
-##Utils
+## Utils
 base64 decode
 `base64 -d FILE`
 Peak inside archive
 `file -z FILE`
 
-##Network
+## Network
 Check public ip
 `curl ifconfig.co`
 
 
 
-##openssl
+## openssl
 Generate self-sugned(x509)
 Rsa key
 	> openssl genrsa -out server.key 2048
@@ -273,24 +273,24 @@ Or ECDSA key
 Generation of self-signed(x509) public key (PEM-encodings .pem|.crt) based on the private (.key)
 	> openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650 
 
-#Nvidia
+# Nvidia
 
 Nvidia tips
 Check status
 	> nvidia-smi 
 
-#convert mkv to mp4
+# convert mkv to mp4
 ffmpeg -i input.mkv -codec copy output.mp4
 
 SOME PROBLEM WITH COLORS (ex vim)
 export TERM=xterm-color
 
-#check installed nvidia driver
+# check installed nvidia driver
 nvidia-smi
 
     change default app
 xdg-mime default .desktop FILES
-#Using mimeo
+# Using mimeo
 mimeo -m FILE.jpeg
 mimeo --add FILETYOE APP.desktop
 
@@ -307,9 +307,9 @@ validate entry with
 desktop-file-validate X.desktop
 
     No unit found error
-#find .service file of unit
+# find .service file of unit
 find / -name UNIT.service
-#enable unit
+# enable unit
 systemctl enable /usr/lib/UNIT/UNIT.service
 
     SSh permissions
@@ -326,11 +326,11 @@ glogg
 xsv
 
 
-###Permission denied error in copy file
+### Permission denied error in copy file
 Check group of file. To change group (in case its in a different user)
 `chown USER FILE`
 
-#From scratch
+# From scratch
 
 With NVidia 2060 RTX 
 `sudo pacman -S nvidia` 

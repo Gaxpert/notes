@@ -13,13 +13,13 @@ rendering --> taking the tree and showing it to the user
 
 use compatibility scripts so it can work across several browsers/ old
 
-##HTML
+## HTML
 <>   tags
 
-###element
+### element
 `\<tag> bla \</tag>`
 
-###atribute
+### atribute
 \<p class=Bla
 common atributes
 id= unique identifier
@@ -58,7 +58,7 @@ Inline frames
 \<iframe> embedded browser window
 
 
-##HTML notes
+## HTML notes
 hgroup --> group h1,h2....
 aside --> sidebar
 article/section --> similar
@@ -98,7 +98,7 @@ we can have several classes for same element
 
 The more specific rule will be used
 
-###Pseudoclasses
+### Pseudoclasses
 p:hover {color:blue;}
 
 Most used
@@ -140,7 +140,7 @@ pseudo-elements vs pseudo-classes
 pseudo-elements create virtual elements in your document -->  ::
 pseudo-classes rely on properties of the document -->  :
 
-##Css Combinators
+## Css Combinators
 
 id
 p em {color:bla} : space is the descendent combinator
@@ -180,7 +180,7 @@ input
 Addapt to screen
 @media screen and (max-width:800px and orientation: portrait/landscape) {}
 
-##Javascript
+## Javascript
 
 How it fits in html
 1. inline in a script element

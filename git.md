@@ -6,7 +6,7 @@ author: Gaxpert
 
 # Git
 
-##SSH
+## SSH
 
 set ~/.ssh folder with ssh keys and permission  `chmod 700`
 

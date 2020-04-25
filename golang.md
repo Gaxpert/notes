@@ -6,7 +6,7 @@ author: Gaxpert
 
 #Golang
 
-##General use
+## General use
 
 go run FILE --> Only runs
 go build FILE --> Compiles
@@ -15,13 +15,13 @@ go tools
 godoc --http=:8080 --> opens go docs in browser
 goimports --> Removes unnecessary imports
 
-###Build for other archs
+### Build for other archs
 env GOOS=target-OS GOARCH=target-architecture go build package-import-path
 
 target-OS = windows / linux / android ....
 target-arch = arm / 386 / amd64
 
-###Loops
+### Loops
 through map
 for _, M := range MAP {
   fmt.print( M   )
@@ -30,12 +30,12 @@ _  --> index element
 M --> map element
 
 
-##Args
+## Args
 os.Args --> arguments package
 
 slices --> [m:n] = m though n-1
 
-###Declare var
+### Declare var
 s := "" //short var declaration, only inside function
 var s string //usual
 var s = ""
@@ -43,7 +43,7 @@ var s string =
 (Use first two)
 
 
-##Printf
+## Printf
 %d de cimal integer
 %x, %o, %b integer in hexade cimal, octal, binar y
 %f, %g, %e floating-p oint number: 3.141593 3.1
@@ -55,7 +55,7 @@ var s string =
 %% literal percentt sign 
 
 
-###Builtin types
+### Builtin types
   Constants: 
 true false iota nil
   Types: 
@@ -67,7 +67,7 @@ make len cap new append copy close delete complex real imag
 panic recover
 
 
-###Packages
+### Packages
 flag for arguments:
 ex:
   var n = flag.Bool("n", false, "description")
@@ -78,19 +78,19 @@ ex:
 usage:
   script.go -n
   
-###Composite Types
+### Composite Types
 arrays --> aggregate type, homogeneous (all elements have same type), fixed size
 structs --> aggregate type, heterogenous, fixed size
 slices --> dinamic data struct  
 maps    --> dinamic data struct
 
 
-###Notes
+### Notes
 When a function is called, a copy of each arg value is assigned to the parameter = inefficient to pass big values (arrays)
 
 
 
-###Libraries
+### Libraries
 Color -> Color cmd
 cli -> command line apps
 authboss -> web auth system
@@ -101,29 +101,29 @@ Gorm -> Dbs
 Goose -> Dbs
 Ginkgo -> Testing framework
 
-###Sizes
+### Sizes
 Single file -> 1mb
 With fmt -> 2mb
 
-###change struct var
+### change struct var
 var p = &person{}
 if key == "age" {
     p.age = value
 }
 
-###Hugo
+### Hugo
 Static site gen
 
-####Start project 
+#### Start project 
 hugo new site SITENAME
-####live server
+#### live server
 hugo server
-####so it drafts draft files
+#### so it drafts draft files
 hugo server -D
 
 config.toml --> theme = "THEME"
 
-####Cool themes
+#### Cool themes
     
 Single page
 
@@ -135,44 +135,44 @@ More Pages
 [Hello Friend NG — Hello Friend NG Theme](https://themes.gohugo.io//theme/hugo-theme-hello-friend-ng/)
 
 
-###Web Assembly
+### Web Assembly
 
     Compilation
     
 Can only compile main packages!
 
 [WebAssembly · golang/go Wiki · GitHub](https://github.com/golang/go/wiki/WebAssembly)
-####compile
+#### compile
 GOOS=js GOARCH=wasm go build -o main.wasm
 
-####get js support file
+#### get js support file
 cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" .
 
 create index.html (check git)
   
-####run server
+#### run server
 goexec 'http.ListenAndServe(`:8080`, http.FileServer(http.Dir(`.`)))'
   
 
 
 
-##Libs
+## Libs
 
-###Cobra
+### Cobra
 Cobra -> command line gen
 [GitHub - spf13/cobra: A Commander for modern Go CLI interactions](https://github.com/spf13/cobra#overview)
 
-####Install cobra
+#### Install cobra
 `go get github.com/spf13/cobra/cobra`
 
-####cobra generator
+#### cobra generator
 cd into app dir
 `cobra init --pkg-name newApp`
 
-####create aditional commands
+#### create aditional commands
 `cobra add EXAMPLE`
 
-####create subcommands
+#### create subcommands
 `cobra add SUBCOMMAND -p 'commandCmd'`
 
 config at: ~/.cobra.yalm
@@ -191,7 +191,7 @@ Required flags
 `rootCmd.MarkFlagRequired("region")`
 
 
-###Color
+### Color
 `go get github.com/fatih/color`
 
 `import "github.com/fatih/color"`
@@ -209,14 +209,14 @@ color.Red("We have red")
 color.Magenta("And many others ..")
 ```
 
-###Log
+### Log
 log.Fatal() logs error and exits (better than os.exit()
 
 log.Printf() --> good for logging results (instead of fmt)
 
 log.Panicf --> similar to fatal but prints more debug info
 
-###Regex
+### Regex
 import regexp
 
 ```go
@@ -225,23 +225,23 @@ parse.MatchString("string")
 parse.ReplaceAllString(....)
 ```
 
-###go-callvis
+### go-callvis
 Go code visualizer
 
 `go get -u github.com/TrueFurby/go-callvis`
 `pacman -S graphviz`
 
-####run
+#### run
 `go-callvis main.go`
 
 
-###WebScrapping
+### WebScrapping
 
 goquery lib
 `go get github.com/PuerkitoBio/goquery`
 
 
-####colly
+#### colly
 `go get -u github.com/gocolly/colly/...`
 
 ```go
@@ -256,13 +256,13 @@ c1 := colly.NewCollector()
 [colly - GoDoc](https://godoc.org/github.com/gocolly/colly#Collector)
 ```
 
-##Web Programming
+## Web Programming
 use form-urlencoded for simple things
 use multipart/form-data for big things like file uploads
 
 
-###Cookies
-####Set cookies
+### Cookies
+#### Set cookies
 ```go
 c:= http.Cookie{
 Name: "asd",
@@ -270,18 +270,18 @@ Name: "asd",
 }
 http.SetCookie(w, &c)
 ```
-####Get cookies
+#### Get cookies
 ```go
 r.Cookie("name")
 r.Cookies() #all cookies
 ```
 
-####Remove cookie
+#### Remove cookie
 Set cookie with same name and 
 MaxAge: -1
 Expires: time.Unix(1,0)
 
-###Template
+### Template
 Go web template engine requires:
 1) Parse the text-formatted template
 2) Execute the parsed template passing a ResponseWriter and some data
@@ -291,7 +291,7 @@ panics if error != nil
 
   In template file
 {{ . }}  --> Data
-####Conditionals
+#### Conditionals
 ```
 {{ if . }}
 bla
@@ -299,7 +299,7 @@ bla
 bleh
 {{ end }}
 ```
-####Iterators
+#### Iterators
 {{ range array }}
 dot is set to the element {{ . }}
 {{ end }}
@@ -307,7 +307,7 @@ dot is set to the element {{ . }}
 {{ template "t2.html" . }} 
 (We can pass args on the template)
   Functions
-####Pass fun as funcMap
+#### Pass fun as funcMap
 ```go
 funcMap := template.FunMap{ "func": func }
 t := template.New("tmp1.html").Funcs(func)
@@ -315,7 +315,7 @@ t := template.New("tmp1.html").Funcs(func)
 Parse
 Execute
 
-####Go sanitaze input
+#### Go sanitaze input
 In case we dont want that (run code)
 `t.Execute(2, template.HTML(r.FormValue("comment")))`
 Typecast comment value in html template

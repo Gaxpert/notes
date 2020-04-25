@@ -6,7 +6,7 @@ author: Gaxpert
 
 # Bash Tips and Tricks
 
-##Scripts
+## Scripts
 
 
 
@@ -45,7 +45,7 @@ Remove lines from file under 3 length (replace 3)
 String to lower case 
 ` echo "$a" | tr '[:upper:]' '[:lower:]'`
 
-###Special variables
+### Special variables
 
 Script name
 `$0`
@@ -62,9 +62,9 @@ Process id
 Exit code
 `$?`
 
-###If
+### If
 
-####File test
+#### File test
 
 Test if file exists
 ```bash
@@ -83,13 +83,13 @@ True if file is not empty
 True if dir
 `-d $dir`
 
-###Strings test
+### Strings test
 True if its argument is empty
 `-z `
 True if not empty
 `-n`
 
-###Numeric comparisons / Arithmetic
+### Numeric comparisons / Arithmetic
 |  Operator |    Returns true when first arg...       |     	
 | ------------- |-------------  | 
 |    -eq    |    equal to          | 
@@ -99,7 +99,7 @@ True if not empty
 |    -le   |   Less than or equal to |
 |    -ge   |   Greater than or equal to |
 
-###Pattern matching 
+### Pattern matching 
 Use case
 ```bash
 case $1 in)
@@ -126,7 +126,7 @@ do
 
 
 
-##Terminal
+## Terminal
 
 Similar to cat File | grep X --> 
 `grep -E "string" file` ex: 

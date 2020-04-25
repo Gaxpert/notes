@@ -4,13 +4,13 @@ date: 2020-04-08 04:59:12+01:00
 author: Gaxpert
 ---
 
-### virtualbox
+# virtualbox
 
-##Arch host and guest
+## Arch host and guest
 
 NOTE: virtualbox and virtualbox modules must be the same version on host and guest
 
-#In Host
+### In Host
 
 for linux standard kernel -> 'virtualbox-host-modules-arch'
 
@@ -18,7 +18,7 @@ In case of manually load module `modprobe vboxdrv`
 
 To use USB ports of host machine in vms, add users to 'vboxusers' group
 
-#In Guest
+### In Guest
 
 for linux standard kernel --> 'virtualbox-guest-utils' and 'xf86-video-vmware'
 
@@ -36,7 +36,7 @@ $ VBoxClient --checkhostversion
 $ VBoxClient --vmsvga-x11
 ```
 
-#Shared folders
+### Shared folders
 
 Manual mounting
 

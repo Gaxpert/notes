@@ -7,7 +7,7 @@ author: Gaxpert
 ### Tese
 
 
-#Conferencias
+# Conferencias
 
     Conferencias
 
@@ -37,7 +37,7 @@ AFIO
 
 
 
-#Papers Phishing
+# Papers Phishing
 Halevi, Tzipora & Memon, Nasir & Nov, Oded. (2015). Spear-Phishing in the Wild: A Real-World Study of Personality, Phishing Self-Efficacy and Vulnerability to Spear-Phishing Attacks. SSRN Electronic Journal. 10.2139/ssrn.2544742. 
 
 Burns, AJ & Johnson, M. & Caputo, Deanna. (2019). Spear phishing in a barrel: Insights from a targeted phishing campaign. Journal of Organizational Computing and Electronic Commerce. 29. 24-39. 10.1080/10919392.2019.1552745. 
@@ -47,7 +47,7 @@ Gupta, Srishti & Gupta, Payas & Ahamad, Mustaque & Kumaraguru, Ponnurangam. (201
 Das, Avisha & Baki, Shahryar & El Aassal, Ayman & Verma, Rakesh & Dunbar, Arthur. (2019). SoK: A Comprehensive Reexamination of Phishing Research from the Security Perspective. IEEE Communications Surveys & Tutorials. PP. 1-1. 10.1109/COMST.2019.2957750. 
 
 
-#Sites
+# Sites
 
 Sites de Interesse
 
