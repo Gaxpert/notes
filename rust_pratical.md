@@ -330,3 +330,11 @@ use std::process;
 // --snip---
 process::exit(1);
 ```
+
+# Utils
+### Bytes to string
+```rust
+use std::str;
+// --snip-- //
+let message = str::from_utf8(&buf).unwrap();
+```

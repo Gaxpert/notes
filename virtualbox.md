@@ -17,6 +17,9 @@ for linux standard kernel -> 'virtualbox-host-modules-arch'
 In case of manually load module `modprobe vboxdrv`
 
 To use USB ports of host machine in vms, add users to 'vboxusers' group
+`sudo usermod -a -G vboxusers $USER`
+Check user groups
+`groups $USER`
 
 ### In Guest
 
