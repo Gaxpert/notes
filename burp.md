@@ -17,35 +17,35 @@ Go to [burp](http://burp) and download the certificate. Then add certificate to 
 ## Assessing Authentication Schemes
 ### Username enumeration
 Some login forms might return "password is invalid" or "user is invalid". If the response is dependent on one of the forms being correct/incorrect we can enumerate correct values
-> Try a login
-> Go to `HTTP history` and `Send to intruder`
-> In intruder clear all the fields and add the field we are testing
-> On payload options add values to test
-> On `Grep - Match` click the checkbox `Flag result items with responses matching these expressions`
-> Clear if needed previous items
-> Add response in case the payload is successful
+1.  Try a login
+1.  Go to `HTTP history` and `Send to intruder`
+1.  In intruder clear all the fields and add the field we are testing
+1.  On payload options add values to test
+1.  On `Grep - Match` click the checkbox `Flag result items with responses matching these expressions`
+1.  Clear if needed previous items
+1.  Add response in case the payload is successful
 Ex: The login form responds "password incorrect" when we have a valid user. We set the payload for possible usernames and flag the results containing "password incorrect"(all other results will be "user is incorrect")
 
 ### Testing for weak lock-out mechanism
 Account lockout mechanisms should be present to mitigate brute-force login attempts. Typically applications set the threshold between 3-5 attempts.
-> Try a login
-> Go to `HTTP history` and `Send to intruder`
-> In intruder clear all the fields and add the field we are testing (password in this case)
-> On payload options add values to test
-> On `Intruder | Options` click on `Grep - Extract`
-> Add button
-> Search for the keyword response of failed login. Ex: "Not logged in"
-> Select. On `Ok` the field should automatically set
-> Start attack
+1.  Try a login
+1.  Go to `HTTP history` and `Send to intruder`
+1.  In intruder clear all the fields and add the field we are testing (password in this case)
+1.  On payload options add values to test
+1.  On `Intruder | Options` click on `Grep - Extract`
+1.  Add button
+1.  Search for the keyword response of failed login. Ex: "Not logged in"
+1.  Select. On `Ok` the field should automatically set
+1.  Start attack
 
 ### Testing for bypassing authentication schemes
 Bypassing techniques include a **direct page request**(forced browsing), **parameter modification**, **session ID prediction** and **SQL injection**.
  	
-> Send auth and non-auth requests to comparer
-> Verify the differences
-> Send non-auth request to repeater
-> Modify parameters
-> Send to application
+1.  Send auth and non-auth requests to comparer
+1.  Verify the differences
+1.  Send non-auth request to repeater
+1.  Modify parameters
+1.  Send to application
 
 ### Testing for browser cache weakness
 Browser caching is provided to improve performance. However, when sensitive data is typed into a browser, such data can also be cached in the browser history.
@@ -58,43 +58,43 @@ Account provisioning is the process of establishing and maintaining user account
 ### Testing for directory traversal
 Directory transversal attacks are attempts to discover or forced browse to unauthorized web pages, usually designed for administrators of the application. If an application does not configure the web document root properly and does not include proper authorization checks for each page accessed, a directory traversal vulnerability could exist.
 
-> Send request to intruder
-> Add field to fuzz in the url path
-> Select payload with paths
-> Uncheck **urlencode** option (Depends on case)
-> Attack
+1.  Send request to intruder
+1.  Add field to fuzz in the url path
+1.  Select payload with paths
+1.  Uncheck **urlencode** option (Depends on case)
+1.  Attack
 
 We can check a successful attack by the length of the response, which might indicate a different content than the standard error.
 This works because we force browse to an area of the web application that was **unmapped**. The term **unmapped** means the application had no direct link to this secret configuration page.
 ### Testing for ******Local File Include (LFI)
 Web servers control access to privileged files and resources through configuration settings.(ex: '/etc/passwd' on Unix).
 An **LFI** attack is an attempt to access privileged files using directory traversal attacks. This attacks include different style including **dot-dot-slash attack** (../), **directory brute-forcing**, **directory climbing** or **backtracking**.
-> Send request to intruder
-> Add field to fuzz in the url path
-> Select payload with paths (Ex: path: "../../../../../../../../../../etc/passwd")
-> Uncheck **urlencode** option (Depends on case)
-> Attack
+1.  Send request to intruder
+1.  Add field to fuzz in the url path
+1.  Select payload with paths (Ex: path: "../../../../../../../../../../etc/passwd")
+1.  Uncheck **urlencode** option (Depends on case)
+1.  Attack
 
 ### Testing for **Remote File Include(RFI)
 **Remote File Inclusion(RFI)** is an attack attempting to access external URLs and remotely located files. The attack is possible due to parameter manipulation and lack of server-side checks.  These oversights allow parameter changes to redirect the user to locations that are not whitelisted or sanitized with proper data validation. 
-> Set intercept on
-> Modify page to load to an external url
-> Forward and set intercept off
+1.  Set intercept on
+1.  Modify page to load to an external url
+1.  Forward and set intercept off
 
 This attack works because the page parameter does not include proper data validation to ensure the values to it are legitime.
 
 ### Testing for privilege escalation
 Privilege escalation attacks occur by modifying the value of the assigned role and replacing the value with another. In the event that the attack is successful, the user gains unauthorized access to resources or functionality normally restricted to administrators or more-powerful accounts.
-> Logged in as a regular user
-> Intercept on
-> Modify param "uid" for ex
+1.  Logged in as a regular user
+1.  Intercept on
+1.  Modify param "uid" for ex
 
 ### Testing for insecure direct object reference
 Allowing unauthorized direct access to files or resources on a system based on user-supplied
 input is known as **Insecure Direct Object Reference(IDOR)** This vulnerability allows the bypassing of authorization checks placed on such files or resources. IDOR is a result of unchecked user supplied input to retrieve an object without performing authorization checks in the application code.
-> Intercept on
-> Find a post request with some resource
-> Modify parameter requested (ex: "/etc/passwd")
+1.  Intercept on
+1.  Find a post request with some resource
+1.  Modify parameter requested (ex: "/etc/passwd")
 
 ## Assesiing Session Management Mechanisms
 ### Testing session token strength using Sequencer
@@ -107,10 +107,10 @@ If a session token value is easily guessable or remains unchanged after login, a
 apply (or fixate) a pre-known token value to a user. This is known as a **session fixation attack**.
 Generally speaking, the purpose of the attack is to harvest sensitive data in the user's account,
 since the session token is known to the attacker.
-> Send HTTP **Response** so sequencer with cookie **session id** set
-> In sequencer select the token location (session id for ex)
-> Start live captury
-> After a while stop and analyze results
+1.  Send HTTP **Response** so sequencer with cookie **session id** set
+1.  In sequencer select the token location (session id for ex)
+1.  Start live captury
+1.  After a while stop and analyze results
 Burp will send multiple requests extracting the session id cookie for entropy analysis
 For more info on tests: [Burp sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer/tests)
 
@@ -123,10 +123,10 @@ encrypted (for example, HTTPS, TLS). This flag protects the cookie from eavesdro
 unencrypted channels.
 The **HttpOnly** flag instructs the browser to not allow access or manipulation of the cookie via
 JavaScript. This flag protects the cookie from cross-site scripting attacks.
-> Examine a GET Request and Response
-> The absence of this flags shows that the cookie values are not protected from JavaScript manipulation
+1.  Examine a GET Request and Response
+1.  The absence of this flags shows that the cookie values are not protected from JavaScript manipulation
 Ex with secure and HTTPOnly set:
-`Set-Cookie: PHPSESSID=<session token value>;path=/;Secure;HttpOnly;`
+`Set-Cookie: PHPSESSID=<session token value1. ;path=/;Secure;HttpOnly;`
 ### Testing for session fixation
 Session tokens are assigned to users for tracking purposes. This means that when browsing an
 application as unauthenticated, a user is assigned a unique session ID, which is usually stored in
@@ -137,15 +137,15 @@ this token changes values from an unauthenticated state to an authenticated stat
 Session fixation is present when application developers do not invalidate the unauthenticated
 session token, allowing the user to use the same one after authentication. This scenario allows an
 attacker with a stolen session token to masquerade as the user.
-> Send auth and non-auth requests to comparer
-> If session id doesn't change, it has a session fixation vulnerability
+1.  Send auth and non-auth requests to comparer
+1.  If session id doesn't change, it has a session fixation vulnerability
 ### Testing for exposed session variables
 Session variables such as tokens, cookies, or hidden form fields are used by application
 developers to send data between the client and the server. Since these variables are exposed on
 the client-side, an attacker can manipulate them in an attempt to gain access to unauthorized
 data or to capture sensitive information.
 Burp provides a feature to unhide hidden form fields
-> Proxy -> Options -> Response Modification -> Check "Unhide hidden form fields"
+1.  Proxy ->.  Options ->.  Response Modification ->.  Check "Unhide hidden form fields"
 ### Testing for Cross-Site Request Forgery
 **Cross-Site Request Forgery (CSRF)** is an attack that rides on an authenticated user's session
 to allow an attacker to force the user to execute unwanted actions on the attacker's behalf. The
