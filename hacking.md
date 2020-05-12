@@ -86,7 +86,7 @@ test "$(ps -ocommand= -p $PPID | awk '{print $1}')" == 'script' || (script -f $H
 
 Now you can have a log of everything you did and when you did it.
 
-## Hardware
+## wHardware
 
 ALFA Network AWUS036NHA + U-de Montage CS 5 dBi WiFi Adaptateur réseau
 

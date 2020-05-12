@@ -135,3 +135,11 @@ Similar to cat File | grep X -->
 Get X line of output 
 `Command | sed -n 2p`
 
+### xargs
+pipe stdin to input of another command
+ex: create dirs
+`echo 'one two' | xargs mkdir`
+Split by n
+`echo 'one two' | xargs -n 1`
+
+

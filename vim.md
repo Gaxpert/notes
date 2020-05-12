@@ -78,4 +78,10 @@ ex:
 set nrformats=decimal  (so it treats numbers as decimals)
 set hls   Syntax Highlight
 
+### Rust
+Install `Racer` for autocomplete [Racer](https://github.com/racer-rust/vim-racer)
+`Plugin 'racer-rust/vim-racer'` on ".vimrc"
+`rustup toolchain add nightly`
+`cargo +nightly install racer `
+ 
 

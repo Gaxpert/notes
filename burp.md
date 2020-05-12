@@ -158,5 +158,15 @@ application on behalf of the attacker. In this case, an attacker rides on ed's s
 registration form, to create an account for the attacker. If ed had been an admin, this could have
 allowed the account role to be elevated as well.
 
+## Assessing business logic
+### Testing business logic
+Business logic data validation errors occur due to a lack of server-side checks, especially in a sequence of events such as shopping cart checkouts.
 
+### Unrestricted file upload - bypassing weak validation
+Many applications allow for files to be uploaded for various reasons. Business logic on the server side must include checking for acceptable files; this is known as whitelisting. If such checks are weak or only address one aspect of file attributes (for example, file extensions only), attackers can exploit these weaknesses and upload unexpected file types that may be executable on the server. 
 
+### Performing process-timing attacks
+By monitoring the time an application takes to complete a task, it is possible for attackers to gather or infer information about how an application is coded. For example, a login process using valid credentials receives a response quicker than the same login process given invalid credentials. This delay in response time leaks information related to system processes
+
+### Testing for the circumvention of work flows
+Shopping cart to payment gateway interactions must be tested by web app penetration testers to ensure the workflow cannot be performed out of sequence. A payment should never be made unless a verification of the cart contents is checked on the server-side first. In the event this check is missing, an attacker can change the price, quantity, or both, prior to the actual purchase.
